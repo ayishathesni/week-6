@@ -1,0 +1,49 @@
+<%- include('../layout/header.ejs') %>
+
+<h1>Welcome to home page</h1>
+
+<form action="/admin/userdetail" method="POST">
+    <input type="text" name="userName" placeholder="Enter name to search" required>
+    <input type="submit" value="Show userdata">
+  </form>
+
+
+
+  
+<br>
+<br>
+<table border="1">
+  <thead>
+      <tr>
+          <th>User Name</th>
+          <th>Email</th>
+          <th>password</th>
+          <th>Action</th>
+          <!-- Removed Password column for security -->
+      </tr>
+  </thead>
+  <tbody>
+      <% if (users.length > 0) { %>
+          <% for (let i = 0; i < users.length; i++) { %>
+              <tr>
+                  <td><%= users[i].userName %></td>
+                  <td><%= users[i].email %></td>
+                  <td><%= users[i].password %></td>
+                  <td><a href="/admin/edituser?id=<%= users[i]._id %>">Edit</a>
+                  <a href="/admin/deletuser?id=<%= users[i]._id %>">delet</a>
+                
+                </td>
+                  <!-- Password is not displayed for security -->
+              </tr>
+          <% } %>
+      <% } else { %>
+          <tr>
+              <td colspan="2">No users found.</td>
+          </tr>
+      <% } %>
+  </tbody>
+</table>
+<br>
+<a href="/admin/newuser">Add new user</a>
+
+<%- include('../layout/footer.ejs') %>

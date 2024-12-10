@@ -1,0 +1,28 @@
+<%- include('../layout/header.ejs') %>
+<style>
+  body{
+    background-color: rgb(155, 142, 154);
+  }
+  
+  .form-logout{
+    text-align: center;
+
+    button{
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1.2rem;
+    }
+  }
+
+
+</style>
+<h1 style="text-align: center;">Welcome to home page</h1>
+
+<form class="form-logout" action="/logout" method="post">
+  <button>Logout</button>
+</form>
+
+
+
+<%- include('../layout/footer.ejs') %>

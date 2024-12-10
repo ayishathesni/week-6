@@ -1,0 +1,52 @@
+<%- include('../layout/header.ejs') %>
+<style>
+   h1{
+    margin-left: 400px;
+  }
+  form{
+    padding: 20px;
+    border-radius: 5px;
+    margin-left: 300px;
+  }
+  input[type="text"], input[type="password"],input[type="email"] {
+    width: 50%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+}
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 50%;
+}
+</style>
+
+<h1>Signup Form</h1>
+<form action="" method="post">
+  <input type="email" name="email" placeholder="Enter email" required>
+  <br>
+  <input type="password" name="password" placeholder="Enter password" required>
+  <br>
+  <label for="vehicle1">Admin</label><br>
+  <input type="checkbox" id="vehicle1" name="admin" >
+  <br>
+  <input type="submit" value="Signup">
+  <%
+if(typeof message !=='undefined'){
+  %>
+     <h5 style="color: cadetblue;"><%=message%></h5>
+  <%
+}
+%>
+<div style="margin-top: 30px; ">
+  <a style="text-decoration:none; color: #007bff;" href="/login">Sign in</a>
+</div>
+</form>
+<%- include('../layout/footer.ejs') %>

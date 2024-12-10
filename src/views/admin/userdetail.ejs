@@ -1,0 +1,23 @@
+<%- include('../layout/header.ejs') %>
+
+<% if (message) { %>
+  <p><%= message %></p>
+<% } else if (user) { %>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= user.userName %></td>
+        <td><%= user.email %></td>
+      </tr>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="/admin/home">Back</a>
+<%- include('../layout/footer.ejs') %>

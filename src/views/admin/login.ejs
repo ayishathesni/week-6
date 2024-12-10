@@ -1,0 +1,54 @@
+<%- include('../layout/header.ejs') %>
+<style>
+h1{
+  margin-left: 400px;
+}
+form{
+  padding: 20px;
+  border-radius: 5px;
+  margin-left: 300px;
+}
+input[type="text"], input[type="password"] {
+  width: 50%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 50%;
+}
+
+</style>
+
+<%
+if(typeof message !=='undefined'){
+  %>
+     <h5><%=message%></h5>
+  <%
+}
+%>
+
+<h1>login Form for admin</h1>
+<form action="" method="post">
+  <input type="text" name="username" placeholder="Enter name" required>
+  <br>
+  
+  <br>
+  <input type="password" name="password" placeholder="Enter password" required>
+  <br>
+  <input type="submit" value="login">
+  
+  
+</form>
+
+<%- include('../layout/footer.ejs') %>
