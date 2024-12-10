@@ -20,7 +20,6 @@ app.use(session({
     secret:"3dxj34d8hrjdfZssd@gbjsl$fjs",
     saveUninitialized:false,
     cookie:{
-        maxAge:1 * 60 * 1000,
         httpOnly:true,
         sameSite:"strict",
     }

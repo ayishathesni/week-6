@@ -1,27 +1,34 @@
-const argon2 = require("argon2")
+const encryptor = require("simple-encryptor");
 
-const passwordHash = async(password)=>{
-    try{
-    const passwordHash = await argon2.hash(password)
-    return passwordHash;
-    }
-    catch(error)
-    {
-        console.log(error)
-    }
-}
+const en = encryptor.createEncryptor("1785cfc3bc6ac7738e8b38c");
 
-const passwordCompare = async (hashedPass,password)=>{
-    try {
-        const isMatch = argon2.verify(hashedPass,password);
-    return isMatch;
-    } catch (error) {
-        console.error(error.message)
-        console.log(error)
-    }
-}
+const passwordHashed = async (password) => {
+  try {
+    const hasedPass = en.encrypt(password);
+    return hasedPass;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-module.exports = {
-    passwordCompare,
-    passwordHash
-}
+const passwordCompare = async (hashedPass, pas) => {
+  try {
+    const isMatch = await en.decrypt(hashedPass);
+    if (isMatch !== pas) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const passwordDecryt = async (hashedPass) => {
+  try {
+    return await en.decrypt(hashedPass);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+module.exports =  { passwordHashed, passwordCompare, passwordDecryt };

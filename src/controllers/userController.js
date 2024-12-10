@@ -1,5 +1,5 @@
 const User = require("../model/userModel")
-const { passwordHash,passwordCompare } = require('../utility/password');
+const { passwordHashed,passwordCompare } = require('../utility/password');
 
 
 const loadRegister=async(req,res)=>{
@@ -21,7 +21,7 @@ const loadRegister=async(req,res)=>{
               return res.render("user/signup",{message:"User already exists"})
             }
  
-            const hashedPass = await passwordHash(password);
+            const hashedPass = await passwordHashed(password);
             const isAdmin = admin ? 1 : 0;
             
             const user = new User({
@@ -29,7 +29,7 @@ const loadRegister=async(req,res)=>{
                 isAdmin,
                 password: hashedPass,
             });
-            
+
             await user.save();
         
             return res.redirect("/login")

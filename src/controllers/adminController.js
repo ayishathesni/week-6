@@ -1,5 +1,5 @@
 const User = require("../model/userModel")
-const {passwordCompare,passwordHash} = require("../utility/password")
+const {passwordCompare,passwordHashed,passwordDecryt} = require("../utility/password")
 
 
 const loadlogin=async(req,res)=>{
@@ -14,23 +14,22 @@ const loadlogin=async(req,res)=>{
 
 const verifylogin = async (req, res) => {
   try {
-    const userName = req.body.username;
-    const password = req.body.password;
-    const userData = await User.findOne({ userName: userName });
+   const {email,password} = req.body;
+    const userData = await User.findOne({ email });
 
-    if (userData) {
-      const passwordMatch = await passwordCompare(userData.pas
-          res.redirect('/admin/home');
-        } else {
-          res.render('admin/login', { message: "You do not have admin access." });
-        }
-      } else {
-        res.render('admin/login', { message: "Email and password are incorrect." });
+    if(userData.isAdmin){
+      const passwordMatch = await passwordCompare(userData.password,password)
+
+      if(!passwordMatch){
+        return res.render("admin/login",{message:"Password is incorrect"})
       }
-    } else {
-      res.render('admin/login', { message: "Email and password are incorrect." });
+      req.session.adminId = userData._id
+      return res.redirect("/admin/home")
+    }else{
+      return res.render("admin/login",{message:"Cannot access admin router"})
     }
-  } catch (error) {
+
+  }catch (error) {
     console.log(error.message);
     res.render('admin/login', { message: "An error occurred. Please try again." });
   }
@@ -40,6 +39,11 @@ const verifylogin = async (req, res) => {
 const loadhome=async(req,res)=>{
   try{
       const userData=await User.find()
+
+      for(let i of userData){
+       i.password = await passwordDecryt(i.password)
+      }
+      
       res.render('admin/home',{users:userData})
   }
   catch(error){
@@ -62,7 +66,7 @@ const newUserLoad=async(req,res)=>{
 const addUser = async (req, res) => {
   try {
     const {email,password} = req.body;
-    const hashedPass = await passwordHash(password);
+    const hashedPass = await passwordHashed(password);
 
     const user = new User({
       email,
@@ -92,7 +96,8 @@ const addUser = async (req, res) => {
 const edituserLoad=async(req,res)=>{
   try{
      const id=req.query.id;
-     const userData=await User.findById({id})
+     const userData=await User.findById(id)
+     userData.password = await passwordDecryt(userData.password)
      if(userData){
       res.render('admin/edituser',{user:userData})
      }
@@ -111,7 +116,7 @@ const updateUsers=async(req,res)=>{
       return res.render("admin/edituser",{message:"All fields is required"})
     }
 
-    const hashedPass = await passwordHash(password)
+    const hashedPass = await passwordHashed(password)
 
     const payload = {
       email,
@@ -134,8 +139,10 @@ const updateUsers=async(req,res)=>{
 
 const showUser = async (req, res) => {
   try {
-    const name = req.body.userName; 
-    const user = await User.findOne({ userName: name }); 
+    const email = req.body.email 
+    const user = await User.findOne({ email }); 
+
+    console.log(user)
 
     if (user) {
       res.render('admin/userdetail', { user, message: null });
